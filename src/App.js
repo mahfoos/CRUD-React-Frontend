@@ -21,11 +21,20 @@ function App() {
       Axios.post('http://localhost:3001/api/insert', {
         movieName: movieName,
         movieReview: review,
-        }).then(()=> {
-          alert('successfully insert');
         });
+        
+       
+      setMovieList([
+        ...movieReviewList,
+        {name : movieName, review: review}
+      ]);
+        
 
   };
+
+  const deleteReview = (movie) => {
+    Axios.delete(`http://localhost:3001/api/delete/ ${movie}`)
+  }
 
 
   return (
@@ -43,9 +52,18 @@ function App() {
         <button onClick = {submitReview}>Submit</button>
 
         {movieReviewList.map((val) => {
-          return <h1>
-            Movie Name : {val.name}  |  Movie Review {val.review}
-            </h1>
+          return (
+            <div className="card">
+               <h1> {val.name}  </h1>
+               <p>Movie Review {val.review}     </p> {/*sql column name*/}
+
+               <button onClick ={ () => {deleteReview(val.name)}}> Delete </button>
+               <input type="text" id = "updateInput"/>
+               <button> Update </button>
+            </div>
+           
+           
+          ) ;
         })}
       </div>
     </div>
